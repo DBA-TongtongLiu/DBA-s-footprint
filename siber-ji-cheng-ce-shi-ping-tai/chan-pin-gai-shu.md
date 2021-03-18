@@ -8,9 +8,96 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
 
 自 siber 上线以后，多次帮助产品、业务线发现不易察觉的问题，有效的规避了线上故障，极大的减轻了测试同学、私有部署同学回归测试的压力。
 
+## 概念说明
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">&#x672F;&#x8BED;</th>
+      <th style="text-align:left">&#x542B;&#x4E49;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x5E73;&#x53F0;&#xFF08;siber&#xFF09;</td>
+      <td
+      style="text-align:left">&#x6765;&#x4E5F;&#x79D1;&#x6280;&#x7814;&#x53D1;&#x56E2;&#x961F;&#x81EA;&#x4E3B;&#x7814;&#x53D1;&#xFF0C;&#x9762;&#x5411;&#x63A5;&#x53E3;&#x7684;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x5E73;&#x53F0;&#x3002;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x73AF;&#x5883;</p>
+        <p>env&#x3001;environment</p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x63A5;&#x53E3;</p>
+        <p>method&#x3001;interface</p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x6D4B;&#x8BD5;&#x6848;&#x4F8B;</p>
+        <p>case</p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x6D4B;&#x8BD5;&#x573A;&#x666F;</p>
+        <p>flow</p>
+      </td>
+      <td style="text-align:left">
+        <p>&#x7531;&#x4E00;&#x7CFB;&#x5217; case &#x7EC4;&#x6210;&#xFF0C;&#x6267;&#x884C;&#x65F6;&#x6309;&#x987A;&#x5E8F;&#x4F9D;&#x6B21;&#x6267;&#x884C;&#x3002;</p>
+        <p>&#x51FA;&#x9519;&#x540E;&#xFF0C;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x201C;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x201D;&#x6216;&#x8005;&#x201C;&#x7EC8;&#x6B62;&#x6267;&#x884C;&#x201D;&#x3002;</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x6D4B;&#x8BD5;&#x8BA1;&#x5212;</p>
+        <p>plan</p>
+      </td>
+      <td style="text-align:left">
+        <p>&#x6709;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A; flow &#x7EC4;&#x6210;&#xFF0C;flow
+          &#x95F4;&#x5E76;&#x53D1;&#x6267;&#x884C;&#x3002;</p>
+        <p>&#x9664;&#x624B;&#x52A8;&#x6267;&#x884C;&#x5916;&#xFF0C;&#x8FD8;&#x53EF;&#x4EE5;&#x914D;&#x7F6E;&#x201C;&#x5B9A;&#x65F6;&#x6267;&#x884C;&#x201D;&#x548C;&#x201C;CI&#x89E6;&#x53D1;&#x201D;&#x3002;</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">CI</td>
+      <td style="text-align:left">
+        <p>&#x6301;&#x7EED;&#x96C6;&#x6210;&#x3002;</p>
+        <p>&#x9879;&#x76EE;&#x53D1;&#x5E03;&#x540E;&#xFF0C;&#x5411; siber &#x53D1;&#x9001;&#x4FE1;&#x606F;&#xFF0C;siber
+          &#x81EA;&#x52A8;&#x6216;&#x5F3A;&#x5236;&#x6267;&#x884C; plan</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">http</td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">grpc</td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">graphQL</td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>proto &#x6587;&#x4EF6;</p>
+        <p>proto file</p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+  </tbody>
+</table>
+
 ## 产品亮点
 
-在向你宣传 siber 之前，想问大家以下几个问题：
+在向你宣传 siber 之前，想请大家先思考几个问题：
 
 * 每次上线前，是否对接口进行全量回归测试？
 * 涉及到多种语言、协议时，如何测试他人的接口？
@@ -20,9 +107,31 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
 * 对于偶发问题如何进行有效监控？
 * ……
 
-对于上述问题，在来也科技内部，统一使用集成测试平台（siber）来解决：
+对于上述问题，在来也科技内部，统一都使用集成测试平台（siber）来解决。接下来从产品层面向大家介绍下，siber 有哪些亮点：
 
-### 规范的测试案例（case）管理
+### 规范的测试管理
+
+#### 统一管理
+
+所有接口测试需要的测试案例（case）、测试场景（flow）、测试计划（plan），都在 siber 上统一创建、维护、查看。避免出现_“你的脚本你知道，我的流程你不懂”等不友好交互的情况。_
+
+用户之间可以共享 case、flow、plan。格式统一，全部使用 json 格式进行交互和校验，避免了_“ grpc 协议我不会调”，“前人用 go 写的测试脚本，但我更喜欢 python ”_等问题。
+
+所以使用 siber 可以降低接口测试难度，提高测试案例的复用性。
+
+#### 版本控制
+
+敏捷开发模式下，产品迭代快。部分接口可能每次迭代都有改动，部分接口却可能两年都没有变化。
+
+那如何直观清晰的维护，同一个接口在不同版本下的 case 呢？
+
+#### 整体复制
+
+
+
+
+
+
 
 ### 清晰的结果展示及持久化
 
