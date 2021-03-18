@@ -28,21 +28,33 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
         <p>&#x73AF;&#x5883;</p>
         <p>env&#x3001;environment</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">
+        <p>&#x8BF8;&#x5982;&#xFF1A;&#x5F00;&#x53D1;&#x3001;&#x6D4B;&#x8BD5;&#x3001;&#x7070;&#x5EA6;&#x3001;&#x751F;&#x4EA7;&#x3002;</p>
+        <p>&#x53EF;&#x4EE5;&#x9488;&#x5BF9;&#x4E0D;&#x540C;&#x4EA7;&#x54C1;&#x7EBF;&#x7684;&#x4E0D;&#x540C;&#x73AF;&#x5883;&#x914D;&#x7F6E;&#x4E0D;&#x540C;&#x7684;&#x5730;&#x5740;&#x3002;</p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:left">
         <p>&#x63A5;&#x53E3;</p>
         <p>method&#x3001;interface</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">
+        <p>&#x5728;&#x6765;&#x4E5F;&#x79D1;&#x6280;&#x5185;&#x90E8;&#xFF0C;&#x901A;&#x5E38;&#x540C;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x6709;
+          http &#x548C; gRPC &#x4E24;&#x79CD;&#x8C03;&#x7528;&#x65B9;&#x5F0F;&#x3002;</p>
+        <p>&#x5BF9;&#x5185;&#x4F7F;&#x7528; gRPC &#x534F;&#x8BAE;&#x3002;</p>
+        <p>&#x5BF9;&#x5916;&#x4F7F;&#x7528;&#x9700;&#x9274;&#x6743;&#x7684; http
+          &#x534F;&#x8BAE;&#x3002;</p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:left">
         <p>&#x6D4B;&#x8BD5;&#x6848;&#x4F8B;</p>
         <p>case</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">
+        <p>&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x53EF;&#x4EE5;&#x5B58;&#x5728;&#x591A;&#x4E2A;&#x6D4B;&#x8BD5;&#x6848;&#x4F8B;&#x3002;</p>
+        <p>&#x901A;&#x8FC7;&#x914D;&#x7F6E;&#x68C0;&#x67E5;&#x9879;&#x68C0;&#x67E5;&#x63A5;&#x53E3;&#x6267;&#x884C;&#x7ED3;&#x679C;&#x662F;&#x5426;&#x7B26;&#x5408;&#x9884;&#x671F;&#x3002;</p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:left">
@@ -66,34 +78,74 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
       </td>
     </tr>
     <tr>
+      <td style="text-align:left">&#x68C0;&#x67E5;&#x9879;</td>
+      <td style="text-align:left">&#x652F;&#x6301;&#x5BF9;&#x72B6;&#x6001;&#x7801;&#x3001;&#x54CD;&#x5E94;&#x65F6;&#x95F4;&#x3001;&#x8BF7;&#x6C42;&#x5934;&#x3001;&#x8BF7;&#x6C42;&#x4F53;&#x3001;&#x54CD;&#x5E94;&#x5934;&#x3001;&#x54CD;&#x5E94;&#x4F53;&#x7684;&#x5168;&#x90E8;&#x6216;&#x90E8;&#x5206;&#x6821;&#x9A8C;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x6CE8;&#x5165;&#x9879;</td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x7761;&#x7720;&#x65F6;&#x95F4;</td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x53C2;&#x6570;</p>
+        <p>parameter</p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x53D8;&#x91CF;</p>
+        <p>variable</p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x81EA;&#x5B9A;&#x4E49;&#x9274;&#x6743;&#x7B97;&#x6CD5;</p>
+        <p>SiberAuth</p>
+      </td>
+      <td style="text-align:left"></td>
+    </tr>
+    <tr>
       <td style="text-align:left">CI</td>
       <td style="text-align:left">
         <p>&#x6301;&#x7EED;&#x96C6;&#x6210;&#x3002;</p>
         <p>&#x9879;&#x76EE;&#x53D1;&#x5E03;&#x540E;&#xFF0C;&#x5411; siber &#x53D1;&#x9001;&#x4FE1;&#x606F;&#xFF0C;siber
-          &#x81EA;&#x52A8;&#x6216;&#x5F3A;&#x5236;&#x6267;&#x884C; plan</p>
+          &#x81EA;&#x52A8;&#x6216;&#x5F3A;&#x5236;&#x6267;&#x884C; plan&#x3002;</p>
       </td>
     </tr>
     <tr>
       <td style="text-align:left">http</td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">&#x8D85;&#x6587;&#x672C;&#x4F20;&#x8F93;&#x534F;&#x8BAE;&#x3002;</td>
     </tr>
     <tr>
-      <td style="text-align:left">grpc</td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">gRPC</td>
+      <td style="text-align:left">
+        <p>Google&#x53D1;&#x8D77;&#x7684;&#x4E00;&#x4E2A;&#x5F00;&#x6E90;&#x8FDC;&#x7A0B;&#x8FC7;&#x7A0B;&#x8C03;&#x7528;&#x7CFB;&#x7EDF;&#x3002;</p>
+        <p>&#x8BE5;&#x7CFB;&#x7EDF;&#x57FA;&#x4E8E;HTTP/2 &#x534F;&#x8BAE;&#x4F20;&#x8F93;&#xFF0C;&#x4F7F;&#x7528;Protocol
+          Buffers &#x4F5C;&#x4E3A;&#x63A5;&#x53E3;&#x63CF;&#x8FF0;&#x8BED;&#x8A00;&#x3002;</p>
+      </td>
     </tr>
     <tr>
-      <td style="text-align:left">graphQL</td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">GraphQL</td>
+      <td style="text-align:left">&#x4E00;&#x4E2A;&#x5F00;&#x6E90;&#x7684;&#xFF0C;&#x9762;&#x5411;API&#x800C;&#x521B;&#x9020;&#x51FA;&#x6765;&#x7684;&#x6570;&#x636E;&#x67E5;&#x8BE2;&#x64CD;&#x4F5C;&#x8BED;&#x8A00;&#x4EE5;&#x53CA;&#x76F8;&#x5E94;&#x7684;&#x8FD0;&#x884C;&#x73AF;&#x5883;&#x3002;</td>
     </tr>
     <tr>
       <td style="text-align:left">
         <p>proto &#x6587;&#x4EF6;</p>
         <p>proto file</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">&#x63CF;&#x8FF0;&#x6587;&#x4EF6;&#xFF0C;&#x7528;&#x4E8E;&#x63CF;&#x8FF0;
+        gRPC &#x63A5;&#x53E3;&#x7684;&#x5B9A;&#x4E49;</td>
     </tr>
   </tbody>
 </table>
+
+
 
 ## 产品亮点
 
