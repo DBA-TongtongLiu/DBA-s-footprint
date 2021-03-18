@@ -78,15 +78,24 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
       </td>
     </tr>
     <tr>
-      <td style="text-align:left">&#x68C0;&#x67E5;&#x9879;</td>
+      <td style="text-align:left">
+        <p>&#x68C0;&#x67E5;&#x9879;</p>
+        <p>checker</p>
+      </td>
       <td style="text-align:left">&#x652F;&#x6301;&#x5BF9;&#x72B6;&#x6001;&#x7801;&#x3001;&#x54CD;&#x5E94;&#x65F6;&#x95F4;&#x3001;&#x8BF7;&#x6C42;&#x5934;&#x3001;&#x8BF7;&#x6C42;&#x4F53;&#x3001;&#x54CD;&#x5E94;&#x5934;&#x3001;&#x54CD;&#x5E94;&#x4F53;&#x7684;&#x5168;&#x90E8;&#x6216;&#x90E8;&#x5206;&#x6821;&#x9A8C;</td>
     </tr>
     <tr>
-      <td style="text-align:left">&#x6CE8;&#x5165;&#x9879;</td>
+      <td style="text-align:left">
+        <p>&#x6CE8;&#x5165;&#x9879;</p>
+        <p>injector</p>
+      </td>
       <td style="text-align:left"></td>
     </tr>
     <tr>
-      <td style="text-align:left">&#x7761;&#x7720;&#x65F6;&#x95F4;</td>
+      <td style="text-align:left">
+        <p>&#x7761;&#x7720;&#x65F6;&#x95F4;</p>
+        <p>sleeper</p>
+      </td>
       <td style="text-align:left"></td>
     </tr>
     <tr>
@@ -175,25 +184,29 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
 
 敏捷开发模式下，产品迭代快。部分接口可能每次迭代都有改动，部分接口却可能两年都没有变化。
 
-**那如何直观清晰的维护，同一个接口在不同版本下的 case 呢？**
+那如何直观清晰的维护，同一个接口在不同版本下的 case 呢？
 
 siber 支持对同一个 case 配置不同版本的输入、输出及检查。可单独对有更新的接口对应的 case 增添版本，对于没变化的接口，无需额外处理。
 
 当执行 plan 时，会自动执行不高于 plan 指定版本的最高版本 case。
 
-详见：TODO
+详见： [case 版本说明](https://liu-tongtong.gitbook.io/dba/siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-case#case-ban-ben-shuo-ming)
 
+#### 复用、复制
 
+复用：同一个 case 可以出现在多个 flow 中，复用特指复用自己或他人之前配置过的 case。不建议对他人的 case 随意修改。 
 
-#### 整体复制
+复制：点击“复制 case”，siber 会为您自动复制该 case 下的全部内容，包括但不限于一个或多个版本的request header 、 request body、checker、injector、sleeper。
 
-
-
-
-
-
+如果您想对他人的 case 做出不确定后果的修改，我们建议您使用“复制 case” 功能，这样，不必影响到使用原先的 case 的执行计划。
 
 ### 清晰的结果展示及持久化
+
+在 siber 上执行的测试计划，可以清晰的展示出 plan、flow、case 整体的状态和运行详情。
+
+清晰的记录了请求和返回的详细内容，每个检查项、注入项是否符合预期等结果。
+
+执行结果永久保存，方便测试和开发者之间同步现场、复现、复盘问题。
 
 ### 健全的版本控制
 
