@@ -89,35 +89,52 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
         <p>&#x6CE8;&#x5165;&#x9879;</p>
         <p>injector</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">
+        <p>&#x5C06; case &#x4E2D;&#x7684;&#x8F93;&#x5165;&#x3001;&#x8F93;&#x51FA;&#x7B49;&#x5185;&#x5BB9;&#xFF0C;&#x5168;&#x90E8;&#x6216;&#x90E8;&#x5206;&#x7684;&#x4FDD;&#x5B58;&#x5728;&#x53D8;&#x91CF;&#x4E2D;&#x3002;</p>
+        <p>&#x4F9B;&#x540E;&#x7EED; case &#x4F7F;&#x7528;&#x3002;</p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:left">
         <p>&#x7761;&#x7720;&#x65F6;&#x95F4;</p>
         <p>sleeper</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">&#x6267;&#x884C;&#x5B8C;&#x5F53;&#x524D; case &#x540E;&#xFF0C;sleep &#x591A;&#x4E45;&#x8FDB;&#x884C;&#x540E;&#x7EED;&#x5904;&#x7406;&#x3002;</td>
     </tr>
     <tr>
       <td style="text-align:left">
         <p>&#x53C2;&#x6570;</p>
         <p>parameter</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">case &#x4E2D;&#x7684;&#x6E32;&#x67D3;&#x9879;&#xFF0C;&#x5305;&#x62EC;&#xFF1A;
+        function&#x3001;variable&#x3001;SiberAuth</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">
+        <p>&#x9884;&#x5B9A;&#x4E49;&#x51FD;&#x6570;</p>
+        <p>FUNCTION&#x3002;</p>
+      </td>
+      <td style="text-align:left">&#x968F;&#x673A;&#x5B57;&#x7B26;&#x4E32;&#x3001;&#x6570;&#x5B57;&#x3001;&#x65F6;&#x95F4;&#x51FD;&#x6570;&#x7B49;&#x3002;</td>
     </tr>
     <tr>
       <td style="text-align:left">
         <p>&#x53D8;&#x91CF;</p>
         <p>variable</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">
+        <p>&#x5C06; case &#x4E2D;&#x7684;&#x8F93;&#x5165;&#x3001;&#x8F93;&#x51FA;&#x7684;&#x90E8;&#x5206;&#x6216;&#x5168;&#x90E8;&#x5185;&#x5BB9;&#x3002;</p>
+        <p>&#x7531; injector &#x6CE8;&#x5165;&#x3002;</p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:left">
         <p>&#x81EA;&#x5B9A;&#x4E49;&#x9274;&#x6743;&#x7B97;&#x6CD5;</p>
         <p>SiberAuth</p>
       </td>
-      <td style="text-align:left"></td>
+      <td style="text-align:left">
+        <p>&#x63A5;&#x53E3;&#x9274;&#x6743;&#x3002;</p>
+        <p>&#x5DF2;&#x5185;&#x7F6E;&#x901A;&#x7528;&#x9274;&#x6743;&#x7B97;&#x6CD5;&#xFF0C;&#x53EF;&#x4EE5;&#x5728;&#x6E90;&#x7801;&#x4E2D;&#x6DFB;&#x52A0;&#x5E94;&#x7528;&#x81EA;&#x5B9A;&#x4E49;&#x7684;&#x7B97;&#x6CD5;&#x3002;</p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:left">CI</td>
@@ -230,44 +247,48 @@ parameter  用于渲染不确定的输入。比如：
 
 #### function
 
+支持生成随机的字符串、数字；当前时间戳；base64 等。
+
+全部内容和配置方法，详见：[预定义的 FUNCTION](https://liu-tongtong.gitbook.io/dba/siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/yu-ding-yi-de-function)
+
 #### variable
+
+支持将同一 flow 中 case 的输入、输出、响应时间、状态码等信息保存在 variable 中，供后续case 使用
 
 #### 自定义的鉴权算法
 
+使用 SiberAuth 可以支持对接口进行鉴权。当前已内置通用鉴权算法，可以自己在 siber 上添加自定义的鉴权算法。
+
 ### 全方位的触发机制
 
-#### ci 触发
+除手动触发外，siber 还支持 CI 触发和 crontab 触发两种触发模式：
+
+#### CI 触发
 
 siber 已与来也科技内部 CI 工作流打通。当前支持两种 CI 触发模式：
 
 1. 测试环境发布：**自动执行**_所有相关 plan_
 2. 生产环境发布：**强制执行**_必要 plan_
 
-自动执行：
+**自动执行：**
 
-强制执行：
+项目在测试环境发布后，会自动触发 siber 在测试环境运行相关plan（plan与服务的关系是自动绑定的）。
+
+如有报错会发送到企业微信群中提示用户。
+
+**强制执行：**
+
+在应用上线前会自动检查 siber 上配置了强制执行的 plan 是否通过，如果未通过，不予上线。
 
 #### crontab 触发
 
-#### 手动触发
-
- ​
+有些问题偶发，比如每天凌晨可能会有零星报错。siber 提供定制执行的功能，可以按照 crontab 的方式触发 plan，对于偶发问题提供了可观测的现场。 ​
 
 ## 系统架构
 
 ![siber &#x7CFB;&#x7EDF;&#x67B6;&#x6784;&#x56FE;](../.gitbook/assets/siber-ye-wu-jia-gou-tu-.png)
 
  ​
-
-
-
-
-
-
-
-
-
-
 
 ## 相关链接
 
