@@ -23,6 +23,7 @@
 * [产品概述](siber-ji-cheng-ce-shi-ping-tai/chan-pin-gai-shu.md)
 * [操作指南](siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/README.md)
   * [配置case](siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-case.md)
+  * [预定义的 FUNCTION](siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/yu-ding-yi-de-function.md)
   * [常见错误说明](siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/chang-jian-cuo-wu-shuo-ming.md)
 * [siber 接口文档](siber-ji-cheng-ce-shi-ping-tai/siber-jie-kou-wen-dang.md)
 

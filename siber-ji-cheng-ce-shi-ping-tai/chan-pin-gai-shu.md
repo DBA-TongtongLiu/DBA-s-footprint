@@ -178,19 +178,7 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
 
 用户之间可以共享 case、flow、plan。格式统一，全部使用 json 格式进行交互和校验，避免了_“ grpc 协议我不会调”，“前人用 go 写的测试脚本，但我更喜欢 python ”_等问题。
 
-所以使用 siber 可以降低接口测试难度，提高测试案例的复用性。
-
-#### 版本控制
-
-敏捷开发模式下，产品迭代快。部分接口可能每次迭代都有改动，部分接口却可能两年都没有变化。
-
-那如何直观清晰的维护，同一个接口在不同版本下的 case 呢？
-
-siber 支持对同一个 case 配置不同版本的输入、输出及检查。可单独对有更新的接口对应的 case 增添版本，对于没变化的接口，无需额外处理。
-
-当执行 plan 时，会自动执行不高于 plan 指定版本的最高版本 case。
-
-详见： [case 版本说明](https://liu-tongtong.gitbook.io/dba/siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-case#case-ban-ben-shuo-ming)
+使用 siber 可以降低接口测试难度，提高测试案例的复用性。
 
 #### 复用、复制
 
@@ -208,11 +196,37 @@ siber 支持对同一个 case 配置不同版本的输入、输出及检查。�
 
 执行结果永久保存，方便测试和开发者之间同步现场、复现、复盘问题。
 
+避免出现：“我这儿没有啊！”，“你是不是参数填错了？”，“无法复现”等许多理不清问题
+
 ### 健全的版本控制
+
+敏捷开发模式下，产品迭代快。部分接口可能每次迭代都有改动，部分接口却可能两年都没有变化。
+
+那如何直观清晰的维护，同一个接口在不同版本下的 case 呢？
+
+siber 支持对同一个 case 配置不同版本的输入、输出及检查。可单独对有更新的接口对应的 case 增添版本，对于没变化的接口，无需额外处理。
+
+当执行 plan 时，会自动执行不高于 plan 指定版本的最高版本 case。
+
+详见： [case 版本说明](https://liu-tongtong.gitbook.io/dba/siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-case#case-ban-ben-shuo-ming)
 
 ### 可适配的 case 协议
 
+在来也科技内部，许多项目配置了 `grpc-gateway` ，使得定义一个 method（method 是延用了 `grpcurl` 中的定义），可以有gRPC 和 http 两种访问形式。
+
+通常而言对内使用 gRPC 协议，对外使用需鉴权的 http 协议。
+
+对于这样的 method，仅需要配置一个 case，便可支持 gRPC 和 http 两种协议的测试。
+
 ### 丰富的 parameter
+
+parameter  用于渲染不确定的输入。比如：
+
+1. 测试创建用户接口，需要 random 一个用户名，不然会报“用户已存在！”
+2. 根据创建用户接口返回的 UserID ，进行 UpdateUser 接口测试，此时需要获得上 case 返回 UserID，如何获得？
+3. 许多接口需要鉴权，而鉴权算法需要随机字符串和当前时间戳，如何实现？
+
+针对于上述问题，我们将 parameter 抽象出三个子项：
 
 #### function
 
