@@ -46,5 +46,17 @@ plan 中包含任意该服务的 case，则定义为相关 plan。
 
 * 运行环境：指开发、测试、灰度、生产等，可以分别为不同的环境设置不同的 crontab 触发和 CI 触发
 * 定时触发：即 crontab 触发，详情参考[配置方法](https://www.jianshu.com/p/626acb9549b1)，或[官方文档](https://godoc.org/github.com/robfig/cron)
-* 服务发布触发：即 CI 触发，作为[强制执行](https://liu-tongtong.gitbook.io/dba/siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-qiang-zhi-zhi-hang)和自动执行的补充
+* 服务发布触发：即 CI 触发，作为[强制执行](https://liu-tongtong.gitbook.io/dba/siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-qiang-zhi-zhi-hang)和[自动执行](https://liu-tongtong.gitbook.io/dba/siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-plan#zi-dong-zhi-hang)的补充
+
+**flow 列表**：
+
+* 左边框内为所有已配置 flow
+* 右边框内为该 plan 所包含的 flow
+* 可任意增删
+
+## 复制 plan
+
+在 plan 列表页，点击“复制”，进行 plan 复制。除名称和创建及最后修改时间不一样外，所有信息与 plan 保持一致。
+
+复制出的 plan 名称为：源 plan 名称 + 时间戳。
 

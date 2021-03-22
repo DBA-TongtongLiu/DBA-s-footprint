@@ -115,5 +115,9 @@ request body。**支持 parameter 渲染（ FUCTION、VARIABLE 和 SiberAuth ）
 
 
 
-## Siber
+## 复制 case
+
+在 case 列表页，点击“复制”，进行 case 复制。除名称和创建及最后修改时间不一样外，所有信息与 源 case 保持一致。
+
+复制出的 case 名称为：源 case 名称 + 时间戳。
 
