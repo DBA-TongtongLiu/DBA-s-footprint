@@ -16,7 +16,7 @@
 
 流程图：
 
-![&#x5F3A;&#x5236;&#x6267;&#x884C;&#x6D41;&#x7A0B;&#x56FE;](../../.gitbook/assets/image%20%287%29.png)
+![&#x5F3A;&#x5236;&#x6267;&#x884C;&#x6D41;&#x7A0B;&#x56FE;](../../.gitbook/assets/image%20%288%29.png)
 
 
 
