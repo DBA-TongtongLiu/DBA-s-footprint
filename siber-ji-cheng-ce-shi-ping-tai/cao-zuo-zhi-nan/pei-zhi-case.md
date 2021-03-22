@@ -1,4 +1,4 @@
-# 配置case
+# 配置 case
 
 ![siber case &#x914D;&#x7F6E;&#x754C;&#x9762;](../../.gitbook/assets/image.png)
 
