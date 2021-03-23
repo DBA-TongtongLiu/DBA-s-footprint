@@ -1,6 +1,6 @@
 # 配置 flow
 
-![&#x7F16;&#x8F91;&#x6D4B;&#x8BD5;&#x573A;&#x666F;](../../.gitbook/assets/image%20%285%29.png)
+![&#x7F16;&#x8F91;&#x6D4B;&#x8BD5;&#x573A;&#x666F;](../../.gitbook/assets/image%20%287%29.png)
 
 ## 测试场景（flow）介绍
 

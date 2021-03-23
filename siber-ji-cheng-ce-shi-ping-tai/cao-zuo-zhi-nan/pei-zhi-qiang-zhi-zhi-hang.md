@@ -1,6 +1,6 @@
 # 配置强制执行
 
-![&#x914D;&#x7F6E;&#x5F3A;&#x5236;&#x6267;&#x884C;](../../.gitbook/assets/image%20%284%29.png)
+![&#x914D;&#x7F6E;&#x5F3A;&#x5236;&#x6267;&#x884C;](../../.gitbook/assets/image%20%285%29.png)
 
 ## 强制执行介绍
 
@@ -16,7 +16,7 @@
 
 流程图：
 
-![&#x5F3A;&#x5236;&#x6267;&#x884C;&#x6D41;&#x7A0B;&#x56FE;](../../.gitbook/assets/image%20%289%29.png)
+![&#x5F3A;&#x5236;&#x6267;&#x884C;&#x6D41;&#x7A0B;&#x56FE;](../../.gitbook/assets/image%20%2812%29.png)
 
 
 
