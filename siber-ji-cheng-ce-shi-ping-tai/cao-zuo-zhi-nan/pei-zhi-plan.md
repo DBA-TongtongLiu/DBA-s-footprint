@@ -1,6 +1,6 @@
 # 配置 plan
 
-![plan &#x7F16;&#x8F91;&#x754C;&#x9762;](../../.gitbook/assets/image%20%2814%29.png)
+![plan &#x7F16;&#x8F91;&#x754C;&#x9762;](../../.gitbook/assets/image%20%2816%29.png)
 
 ## 测试场景（plan）介绍
 
@@ -42,7 +42,7 @@ plan 中包含任意该服务的 case，则定义为相关 plan。
 
 **运行配置**：
 
-![plan &#x8FD0;&#x884C;&#x914D;&#x7F6E;](../../.gitbook/assets/image%20%2816%29.png)
+![plan &#x8FD0;&#x884C;&#x914D;&#x7F6E;](../../.gitbook/assets/image%20%2822%29.png)
 
 * 运行环境：指开发、测试、灰度、生产等，可以分别为不同的环境设置不同的 crontab 触发和 CI 触发
 * 定时触发：即 crontab 触发，详情参考[配置方法](https://www.jianshu.com/p/626acb9549b1)，或[官方文档](https://godoc.org/github.com/robfig/cron)

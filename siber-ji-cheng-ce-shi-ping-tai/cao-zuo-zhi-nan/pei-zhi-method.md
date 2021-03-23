@@ -4,7 +4,7 @@
 
 ## GRPC
 
-![gRPC method &#x914D;&#x7F6E;](../../.gitbook/assets/image%20%289%29.png)
+![gRPC method &#x914D;&#x7F6E;](../../.gitbook/assets/image%20%2810%29.png)
 
 **proto 文件相对路径**：
 
@@ -28,7 +28,7 @@ siber会实时从仓库中拉取。
 
 ## HTTP
 
-![http &#x63A5;&#x53E3;&#x914D;&#x7F6E;&#x754C;&#x9762;](../../.gitbook/assets/image%20%2813%29.png)
+![http &#x63A5;&#x53E3;&#x914D;&#x7F6E;&#x754C;&#x9762;](../../.gitbook/assets/image%20%2815%29.png)
 
 **http 请求方式**：选择 post、get、put、copy ……等请求方式
 
