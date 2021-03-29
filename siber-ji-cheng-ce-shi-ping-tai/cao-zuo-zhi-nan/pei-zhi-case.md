@@ -245,3 +245,21 @@ friends.#(nets.#(=="fb"))#.first   >> ["Dale","Roger"]
 
 复制出的 case 名称为：源 case 名称 + 时间戳。
 
+
+
+## inject 类型case
+
+inject 类型case，主要的目的在于注入变量。
+
+比如说：我们不同环境使用不同的测试用户，那么配置 inject 类型 case 如下：
+
+![inject &#x7C7B;&#x578B; case ](../../.gitbook/assets/image%20%2826%29.png)
+
+在后续的 case 中，直接调用 variable 即可：
+
+![](../../.gitbook/assets/image%20%2827%29.png)
+
+在不同环境运行时， **inject case 会根据运行环境自动为该 case 注入不同的 account id**。
+
+
+
