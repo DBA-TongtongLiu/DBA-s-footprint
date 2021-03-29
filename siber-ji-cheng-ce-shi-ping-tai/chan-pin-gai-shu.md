@@ -288,12 +288,16 @@ siber 已与来也科技内部 CI 工作流打通。当前支持两种 CI 触发
 
 ![siber &#x7CFB;&#x7EDF;&#x67B6;&#x6784;&#x56FE;](../.gitbook/assets/siber-ye-wu-jia-gou-tu-.png)
 
- ​
+## 贡献者
+
+后端开发：刘桐烔，季琛
+
+前端开发：徐丽婧
 
 ## 相关链接
 
-1. 试用 demo：
-2. dockerhub：
-3. github 地址：
+1. 试用 demo：[http://47.93.37.10:88/](http://47.93.37.10:88/)
+2. dockerhub：[https://hub.docker.com/repository/docker/tinaliu/siber-server](https://hub.docker.com/repository/docker/tinaliu/siber-server)；[https://hub.docker.com/repository/docker/tinaliu/siber-web](https://hub.docker.com/repository/docker/tinaliu/siber-web)
+3. github 地址：[https://github.com/Laiye-Tech/siber-server](https://github.com/Laiye-Tech/siber-server)；[https://github.com/Laiye-Tech/siber-web](https://github.com/Laiye-Tech/siber-web)
 4. 专利申请：[http://www.ipfeibiao.com/patent/view/2020106123674.html](http://www.ipfeibiao.com/patent/view/2020106123674.html)
 
