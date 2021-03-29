@@ -99,6 +99,18 @@ pubkey 在环境中的配置：
 
 ![&#x73AF;&#x5883;&#x4E2D;&#x914D;&#x7F6E; pubkey &#x548C; secret](../../.gitbook/assets/image%20%282%29.png)
 
+### 上传文件
+
+当前 siber 支持对图片做 base64 编码，图片将会上传至 oss 或者 minio 上（取决您配置的是什么）。
+
+上传成功后，前端会返回图片所在路径，然后使用 siber 的 FUNCTION进行说明，下面是一个 request body 的示例：
+
+```text
+{
+    "img_base64": "{{FUNCTION.base_64(https://laiye-im-saas.oss-cn-beijing.aliyuncs.com/e04f3d27-037c-4b86-9dd0-706a559aaf88.jpeg)}}"
+}
+```
+
 ### 请求体
 
 request body。**支持 parameter 渲染（ FUCTION、VARIABLE 和 SiberAuth ）。**
@@ -107,17 +119,129 @@ request body。**支持 parameter 渲染（ FUCTION、VARIABLE 和 SiberAuth ）
 
 用户在此基础上修改即可。
 
-### 上传文件
+**request body 支持 parameter 渲染（ FUCTION、VARIABLE 的解析）。**
 
+### **注入项**
 
+将指定内容保存到变量中，在同一 flow 的后续 case 中，使用 `{{VARIABLE.***}}` 的格式进行访问。
 
-## 
+variable 的值可以来自：
 
+1. request header、request body 全部或部分内容
+2. response header 、response body 全部或部分内容
+3. response status ，即接口响应码值
+4. response time，即接口响应时间
 
+**注意：**
+
+* 同一个 flow 中，variable 名称唯一，如果同一个 variable 被保存两次，则后面的覆盖掉前面的。
+* variable 在 flow 内共享，不在 flow 之间共享。
+
+### **检查项**
+
+检查指定内容是否符合预期，检查内容包括：
+
+1. request header、request body 全部或部分内容
+2. response header 、response body 全部或部分内容
+3. response status ，即接口响应码值
+4. response time，即接口响应时间
+
+检查方式包括：
+
+1. `=` 等于，支持数字、字符串、数组、嵌套数组、map 等
+2. `!=` 不等于，支持数字、字符串、数组、嵌套数组、map 等
+3. `>` 大于，支持数组、字符串
+4. `>=` 大于等于，支持数组、字符串
+5. `<` 小于，支持数组、字符串
+6. `<=` 小于等于，支持数组、字符串
+7. `exist` 存在，判断检查的内容中是否存在指定的 key
+8. `length` 长度：支持字符串长度、数组类型
+9. `in` 检查的内容是否被包含在指定内容中，支持字符串、数组类型 
+10. `include` 检查的内容是否包含指定内容，支持字符串、数组类型
+11. `not include` 检查的内容不包含指定内容为符合预期，支持字符串、数组类型
+
+### **睡眠时间**
+
+执行完此 case 后，休眠多长时间进行后续操作。
+
+### 摘取指定内容
+
+siber 内部使用 [Gjson](https://github.com/tidwall/gjson) 来摘取指定内容，感兴趣的同学，可以点击链接查看详细信息。这里做些简单的示例，假设存在 json 如下：
+
+```text
+{
+    "name": {
+        "first": "Tom",
+        "last": "Anderson"
+    },
+    "age": 37,
+    "children": [
+        "Sara",
+        "Alex",
+        "Jack"
+    ],
+    "fav.movie": "Deer Hunter",
+    "friends": [
+        {
+            "first": "Dale",
+            "last": "Murphy",
+            "age": 44,
+            "nets": [
+                "ig",
+                "fb",
+                "tw"
+            ]
+        },
+        {
+            "first": "Roger",
+            "last": "Craig",
+            "age": 68,
+            "nets": [
+                "fb",
+                "tw"
+            ]
+        },
+        {
+            "first": "Jane",
+            "last": "Murphy",
+            "age": 47,
+            "nets": [
+                "ig",
+                "tw"
+            ]
+        }
+    ]
+}
+```
+
+使用以下命令获得相关内容：
+
+```text
+"name.last"          >> "Anderson"
+"age"                >> 37
+"children"           >> ["Sara","Alex","Jack"]
+"children.#"         >> 3
+"children.1"         >> "Alex"
+"child*.2"           >> "Jack"
+"c?ildren.0"         >> "Sara"
+"fav\.movie"         >> "Deer Hunter"
+
+```
+
+```text
+"friends.#.first"    >> ["Dale","Roger","Jane"]
+"friends.1.last"     >> "Craig"
+friends.#(last=="Murphy").first    >> "Dale"
+friends.#(last=="Murphy")#.first   >> ["Dale","Jane"]
+friends.#(age>45)#.last            >> ["Craig","Murphy"]
+friends.#(first%"D*").last         >> "Murphy"
+friends.#(first!%"D*").last        >> "Craig"
+friends.#(nets.#(=="fb"))#.first   >> ["Dale","Roger"]
+```
 
 ## 复制 case
 
-在 case 列表页，点击“复制”，进行 case 复制。除名称和创建及最后修改时间不一样外，所有信息与 源 case 保持一致。
+在 case 列表页，点击“复制”，进行 case 复制。除名称、创建时间、最后修改时间不一样外，所有信息与源 case 保持一致。
 
 复制出的 case 名称为：源 case 名称 + 时间戳。
 
