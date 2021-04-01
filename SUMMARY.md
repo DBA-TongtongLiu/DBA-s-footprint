@@ -39,4 +39,6 @@
 ## MongoDB
 
 * [MongoDB 复制集搭建](mongodb/mongodb-fu-ben-ji-da-jian.md)
+* [MongoDB 故障演练](mongodb/mongodb-gu-zhang-yan-lian.md)
+* [误删除/更新的操作](mongodb/wu-shan-chu-geng-xin-de-cao-zuo.md)
 
