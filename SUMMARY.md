@@ -13,12 +13,11 @@
 * [生成达梦的数据初始化脚本](sheng-cheng-da-meng-de-shu-ju-chu-shi-hua-jiao-ben.md)
 * [达梦中那些影响心情的参数](da-meng-zhong-na-xie-ying-xiang-xin-qing-de-can-shu.md)
 
-## DBA 日常案例
+## MySQL
 
-* [MySQL 表的行转列](dba-ri-chang-an-li/mysql-biao-de-hang-zhuan-lie.md)
-* [docker 上安装及使用 XtraBackup](dba-ri-chang-an-li/docker-and-xtrabackup.md)
-* [MGR + Proxy 集群故障排查](dba-ri-chang-an-li/mgr-+-proxy-ji-qun-gu-zhang-pai-cha.md)
-* [MongoDB 复制集搭建](dba-ri-chang-an-li/mongodb-fu-ben-ji-da-jian.md)
+* [MySQL 表的行转列](mysql/mysql-biao-de-hang-zhuan-lie.md)
+* [docker 上安装及使用 XtraBackup](mysql/docker-and-xtrabackup.md)
+* [MGR + Proxy 集群故障排查](mysql/mgr-+-proxy-ji-qun-gu-zhang-pai-cha.md)
 
 ## siber：集成测试平台
 
@@ -36,4 +35,8 @@
 * [siber 接口文档](siber-ji-cheng-ce-shi-ping-tai/siber-jie-kou-wen-dang.md)
 * [搭建 siber](siber-ji-cheng-ce-shi-ping-tai/da-jian-siber/README.md)
   * [使用 docker 镜像搭建 siber](siber-ji-cheng-ce-shi-ping-tai/da-jian-siber/shi-yong-docker-jing-xiang-da-jian-siber.md)
+
+## MongoDB
+
+* [MongoDB 复制集搭建](mongodb/mongodb-fu-ben-ji-da-jian.md)
 

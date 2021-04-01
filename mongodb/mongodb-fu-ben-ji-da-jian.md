@@ -23,17 +23,67 @@ export MONGODB_HOME=/usr/local/mongodb
 export PATH=$PATH:$MONGODB_HOME/bin
 ```
 
-家在环境变量：
+加载环境变量：
 
 ```text
 source /etc/profile
+```
+
+查看是否加载成功：
+
+```text
+which mongod
 ```
 
 ## 创建三个 MongoDB 实例
 
 ### 创建相关目录
 
+```text
+mkdir -p /data/db{1,2,3}
+```
 
+### 创建配置文件
+
+```text
+vim /data/db1/mongod.conf
+```
+
+```text
+systemLog:
+  destination: file
+  path: /data/db1/mongod.log
+  logAppend: true
+storage:
+  dbPath: /data/db1    # 数据目录
+net:
+  bindIp: 0.0.0.0
+  port: 28017   # 端口
+replication:
+  replSetName: rs0
+processManagement:
+  fork: true
+```
+
+在三个目录下分别创建配置文件，自行修改配置文件中的：
+
+1. systemLog.path
+2. storage.dbPath
+3. net.port
+
+### 启动实例
+
+```text
+mongod -f /data/db1/mongod.conf
+mongod -f /data/db2/mongod.conf
+mongod -f /data/db3/mongod.conf
+```
+
+### 查看启动是否成功
+
+```text
+ps -ef | grep mongod
+```
 
 ## 搭建复制集
 
