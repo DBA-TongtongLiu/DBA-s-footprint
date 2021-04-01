@@ -18,6 +18,7 @@
 * [MySQL 表的行转列](dba-ri-chang-an-li/mysql-biao-de-hang-zhuan-lie.md)
 * [docker 上安装及使用 XtraBackup](dba-ri-chang-an-li/docker-and-xtrabackup.md)
 * [MGR + Proxy 集群故障排查](dba-ri-chang-an-li/mgr-+-proxy-ji-qun-gu-zhang-pai-cha.md)
+* [MongoDB 复制集搭建](dba-ri-chang-an-li/mongodb-fu-ben-ji-da-jian.md)
 
 ## siber：集成测试平台
 
