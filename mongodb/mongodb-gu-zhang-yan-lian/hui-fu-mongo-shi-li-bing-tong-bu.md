@@ -97,7 +97,7 @@ mongo --host 127.0.0.1 -u root -p --authenticationDatabase admin
 
 ## 检查数据
 
-Hash 校验:
+推荐 Hash 校验:
 
 ```text
 # 对当前库下的每张表做 Hash 校验
@@ -106,4 +106,8 @@ db.collection_env.runCommand({dbHash:1})
 # 对指定集合做校验
 db.runCommand ( { dbHash: 1, collections: [ <collection1>, ... ] } )
 ```
+
+如果数据在源源不断写入，那么执行时间不统一是会影响到校验结果的。
+
+在流量不大的情况下，可以使用 `command + d` ，再 `command + shift + i` 开启两个同步窗口：`Keyboard input will be sent to multiple sessions`  然后使用dbHash命令进行校验。
 
