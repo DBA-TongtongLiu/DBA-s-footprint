@@ -1,6 +1,6 @@
 # Table of contents
 
-* [hello world](README.md)
+* [hello money](README.md)
 
 ## 麒麟&达梦适配 <a id="qi-lin-da-meng-kuo-pei"></a>
 
@@ -39,6 +39,7 @@
 ## MongoDB
 
 * [MongoDB 复制集搭建](mongodb/mongodb-fu-ben-ji-da-jian.md)
-* [MongoDB 故障演练](mongodb/mongodb-gu-zhang-yan-lian.md)
+* [MongoDB 故障演练](mongodb/mongodb-gu-zhang-yan-lian/README.md)
+  * [恢复 mongo 实例并同步](mongodb/mongodb-gu-zhang-yan-lian/hui-fu-mongo-shi-li-bing-tong-bu.md)
 * [误删除/更新的操作](mongodb/wu-shan-chu-geng-xin-de-cao-zuo.md)
 
