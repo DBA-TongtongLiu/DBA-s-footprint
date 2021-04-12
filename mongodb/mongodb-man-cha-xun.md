@@ -1,8 +1,8 @@
 ---
-description: 如果你也被慢查询、CPU 打满等问题困扰，读它！
+description: 如果你也被慢查询、CPU 打满、雪崩等问题困扰，盘它！
 ---
 
-# MongoDB 慢查询
+# mongo 连接二三事
 
 ## 查看实例上的慢查询
 
@@ -205,6 +205,20 @@ db.currentOp(
     </tr>
   </tbody>
 </table>
+
+## 慢查询处理
+
+### kill 指定操作
+
+当慢查询严重，异常连接数过多（或者正常连接数过多），为了保证大局稳定，我们需要“牺牲”部分连接。
+
+MongoDB​ 提供如下方法，可以杀掉任意执行中的操作：
+
+```text
+db.killOp(opid)
+```
+
+其中 `opid` 为上文所述 `db.currentOp()` 中展示的 `opid`。
 
 
 
