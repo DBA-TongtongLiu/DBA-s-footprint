@@ -42,4 +42,5 @@
 * [MongoDB 故障演练](mongodb/mongodb-gu-zhang-yan-lian/README.md)
   * [恢复 mongo 实例并同步](mongodb/mongodb-gu-zhang-yan-lian/hui-fu-mongo-shi-li-bing-tong-bu.md)
 * [误删除/更新的操作](mongodb/wu-shan-chu-geng-xin-de-cao-zuo.md)
+* [MongoDB 慢查询](mongodb/mongodb-man-cha-xun.md)
 
