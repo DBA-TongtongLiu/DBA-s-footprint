@@ -206,7 +206,7 @@ db.currentOp(
   </tbody>
 </table>
 
-## 慢查询处理
+## 连接处理
 
 ### kill 指定操作
 
@@ -220,5 +220,28 @@ db.killOp(opid)
 
 其中 `opid` 为上文所述 `db.currentOp()` 中展示的 `opid`。
 
+#### killOp 原理
 
+每个连接对应的服务线程存储了一个killPending的字段，当发送killOp时，会将该字段置1；请求在执行过程中，可以通过不断的调用OperationContext::checkForInterrupt\(\)来检查killPending是否被设置，如果被设置，则线程退出。
+
+一个请求要支持 killOp，必须在请求的处理逻辑里加上 checkForInterrupt\(\) 检查点才行，否则即使发送了 killOp，也只能等待请求完全处理完毕线程才会退出。
+
+比如 createIndex 的处理逻辑里包含了类似如下的代码，在 createIndex 的循环过程中，一旦 killPending 被置1了，createIndex 的执行可以在当前循环结束时退出。
+
+```text
+while (!createIndexFinished) {
+    createIndexForOneElement();
+    checkForInterupt();
+}
+```
+
+所以发送 killOp 后，请求要执行到下一个『检查点』线程才会退出，MongoDB 在很多可能耗时长的请求中，都加入了checkForInterrupt\(\)检查点，如创建索引，repair database，mapreduce、aggregation等。
+
+### ctrl + c 是否可立即终止操作？
+
+`Ctrl + C` 会关闭 `client` 到 `server` 的连接，但后端的线程不会立即结束（MongoDB每个连接的请求由一个对应的线程来处理），而是会一直执行下去。
+
+直到执行结束后，给 `client` 端发送通知，会发现连接已经断开，这时线程才会退出。
+
+这个时候就需要使用 `killOp` 去实现真正的“终止”，操作点会在下个`检查点`结束执行，整个线程退出。
 
