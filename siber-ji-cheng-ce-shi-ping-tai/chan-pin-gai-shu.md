@@ -8,6 +8,10 @@ siber 于2019年末在来也科技内部上线 V1.0 版本。当前已覆盖接�
 
 自 siber 上线以后，多次帮助产品、业务线发现不易察觉的问题，有效的规避了线上故障，极大的减轻了测试同学、私有部署同学回归测试的压力。
 
+## 系统架构
+
+![siber &#x7CFB;&#x7EDF;&#x67B6;&#x6784;&#x56FE;](../.gitbook/assets/siber-ye-wu-jia-gou-tu-.png)
+
 ## 概念说明
 
 <table>
@@ -284,9 +288,14 @@ siber 已与来也科技内部 CI 工作流打通。当前支持两种 CI 触发
 
 有些问题偶发，比如每天凌晨可能会有零星报错。siber 提供定制执行的功能，可以按照 crontab 的方式触发 plan，对于偶发问题提供了可观测的现场。 ​
 
-## 系统架构
+## siber 可发现的问题
 
-![siber &#x7CFB;&#x7EDF;&#x67B6;&#x6784;&#x56FE;](../.gitbook/assets/siber-ye-wu-jia-gou-tu-.png)
+siber 自上线以来，将许多问题扼杀在了上线前，包括但不限于：
+
+1. docker 少配置：`cannot validate certificate for …… because it doesn't contain any IP SANs`
+2. 配置未推送
+3. 表结构未变更，数据未初始化
+4. proto 版本未更新
 
 ## 贡献者
 
