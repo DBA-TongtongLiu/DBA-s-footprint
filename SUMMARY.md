@@ -44,3 +44,7 @@
 * [误删除/更新的操作](mongodb/wu-shan-chu-geng-xin-de-cao-zuo.md)
 * [mongo 连接二三事](mongodb/mongodb-man-cha-xun.md)
 
+## 开发技能
+
+* [base64 的四种编码方式](kai-fa-ji-neng/base64-de-si-zhong-bian-ma-fang-shi.md)
+
