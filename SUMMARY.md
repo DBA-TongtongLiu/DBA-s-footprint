@@ -19,7 +19,7 @@
 * [docker 上安装及使用 XtraBackup](mysql/docker-and-xtrabackup.md)
 * [MGR](mysql/mysql-mgr/README.md)
   * [MGR + Proxy 集群故障排查](mysql/mysql-mgr/mgr-+-proxy-ji-qun-gu-zhang-pai-cha.md)
-  * [202107 尚诚故障排查及恢复](mysql/mysql-mgr/202107-shang-cheng-gu-zhang-pai-cha-ji-hui-fu.md)
+  * [MGR 集群只剩一台节点怎么办](mysql/mysql-mgr/202107-shang-cheng-gu-zhang-pai-cha-ji-hui-fu.md)
 
 ## siber：集成测试平台
 

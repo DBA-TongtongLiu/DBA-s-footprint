@@ -1,6 +1,10 @@
-# 202107 尚诚故障排查及恢复
+# MGR 集群只剩一台节点怎么办
 
 ## 故障原因
+
+### 故障现象
+
+MGR 集群从库全部断开
 
 ### 处理方式
 
@@ -9,6 +13,8 @@
 预计低峰期对 MGR 集群进行恢复。
 
 ## MGR 集群恢复
+
+将承担读写的那台实设置为 MGR 主库，使用 mysqldump 扩容两个新的从库，连接到该主库上。
 
 ### 前置检查
 
@@ -48,6 +54,20 @@ show global variables like 'group_replication_local_address';
 show global variables like 'group_replication_group_seeds';
 ```
 
+### 将 master-01 设置为 MGR 主库
+
+```text
+reset master;
+
+change master to master_user='repluser',master_password='123456' for channel 'group_replication_recovery';
+
+set global group_replication_bootstrap_group=on;
+
+start group_replication;
+
+set global group_replication_bootstrap_group=off;
+```
+
 ### 数据备份
 
 对 master-01 和 slave-02 进行数据备份
@@ -62,7 +82,7 @@ msyqldump -h 127.0.0.1 -u root -p -q --single-transaction --master-data=2 --all-
 2.  `​--single-transaction:` Creates a consistent snapshot by dumping all tables in a single transaction.
 3. `--master-data=2:` 会注释掉 change master to， MGR 不需要指定具体位置，会自动寻找
 
-### slave-03 恢复数据
+### 修复 slave-03
 
 将 `gtid_executed` , `gtid_purged` 变量置空
 
@@ -82,21 +102,7 @@ source recovery.sql;
 flush privileges;
 ```
 
-### 恢复 MGR 集群
-
-#### 将 master-01 设置为 MGR 主库
-
-```text
-change master to master_user='repluser',master_password='123456' for channel 'group_replication_recovery';
-
-set global group_replication_bootstrap_group=on;
-
-start group_replication;
-
-set global group_replication_bootstrap_group=off;
-```
-
-#### 首先修复 slave-03
+加入 MGR 集群：
 
 ```text
 set group_replication_local_address=':24901'
@@ -106,11 +112,9 @@ set global group_replication_allow_local_disjoint_gtids_join=on;
 start group_replication;
 ```
 
-#### 检查
-
 执行完此操作后，在主库进行可用性测试，观从库同步是否正常。
 
-#### 恢复 slave-02
+### 恢复 slave-02
 
 将 slave-02 的数据永久保留，按照 slave-03 的操作步骤进行恢复操作。
 
@@ -132,6 +136,22 @@ insert into mysql_servers(hostgroup_id,hostname,port,weight,comment) values(10,'
  save mysql servers to disk;
   
  select * from mysql_servers
+```
+
+### 检查用户、规则等是否存在
+
+```text
+select * from mysql_users;
+
+select * from mysql_replication_hostgroups;
+```
+
+如果不存在，添加:
+
+```text
+ insert into mysql_users(username,password,default_hostgroup) values('proxysql','123456',10);
+
+insert into mysql_replication_hostgroups values (10,20,'read_only','proxysql');
 ```
 
 ### 可用性测试
