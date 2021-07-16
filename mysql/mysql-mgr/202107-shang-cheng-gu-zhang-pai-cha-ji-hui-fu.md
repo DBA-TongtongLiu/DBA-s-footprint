@@ -106,9 +106,61 @@ set global group_replication_allow_local_disjoint_gtids_join=on;
 start group_replication;
 ```
 
+#### 检查
+
+执行完此操作后，在主库进行可用性测试，观从库同步是否正常。
+
+#### 恢复 slave-02
+
+将 slave-02 的数据永久保留，按照 slave-03 的操作步骤进行恢复操作。
+
+验证 slave-02 的可用性
+
 ## ProxySQL 恢复
 
+### 添加主从服务器列表
+
+```text
+insert into mysql_servers(hostgroup_id,hostname,port,weight,comment) values(10,'192.168.1.144',3306,1,'master'),(10,'192.168.1.145',3306,1,'slave1'),(10,'192.168.1.146',3306,3,'slave2');
+```
+
+### 加载和保存
+
+```text
+ load mysql servers to runtime;
+ 
+ save mysql servers to disk;
+  
+ select * from mysql_servers
+```
+
+### 可用性测试
+
+确保建表、删表、增删改查没有问题
+
+### 错误日志
+
+查看 proxy 和 mysql 的错误日志，观察是否有报错
+
 ## 可用性测试
+
+```text
+create database test;
+
+create table test(id int);
+
+insert into test.test values (1);
+
+select * from test.test;
+
+update test.test id = 2 where id = 1;
+
+delete from test.test;
+
+drop table test.test;
+
+drop database test.test;
+```
 
 
 
