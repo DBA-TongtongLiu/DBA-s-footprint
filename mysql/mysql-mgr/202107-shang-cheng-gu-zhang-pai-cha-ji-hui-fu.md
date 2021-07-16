@@ -36,6 +36,18 @@ show global variables like 'group_replication_single_primary_mode';
 show global variables like 'server_id';
 ```
 
+检查实例当前的地址：
+
+```text
+show global variables like 'group_replication_local_address';
+```
+
+检查 MGR 集群当前的配置：
+
+```text
+show global variables like 'group_replication_group_seeds';
+```
+
 ### 数据备份
 
 对 master-01 和 slave-02 进行数据备份
@@ -88,6 +100,10 @@ set global group_replication_bootstrap_group=off;
 
 ```text
 set group_replication_local_address=':24901'
+
+set global group_replication_allow_local_disjoint_gtids_join=on;
+
+start group_replication;
 ```
 
 ## ProxySQL 恢复
