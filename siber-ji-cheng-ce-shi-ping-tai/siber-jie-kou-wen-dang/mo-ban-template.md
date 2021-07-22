@@ -6,6 +6,12 @@ description: 检查模板相关的接口、proto file 定义
 
 ## 模板的增、删、改、查
 
+### uri
+
+```text
+/siberhttp/manage/check_template
+```
+
 ### request
 
 ```text
@@ -49,7 +55,38 @@ manage\_mode：
 }
 ```
 
+## 模板列表
 
+### uri
+
+```text
+/siberhttp/list/check_template
+```
+
+### request
+
+因为这个数据量不会很大，所以当前都是全量返回，需要搜索的，直接使用浏览器搜索就成。
+
+```text
+{
+    "filterContent": {
+        "": ""
+    }
+}
+```
+
+### response
+
+```text
+{
+    "check_template": [
+        {
+            "template_name": "测试",
+            "update_time": "1626951488"
+        }
+    ]
+}
+```
 
 ## 模板的 proto 定义
 
