@@ -1,3 +1,7 @@
+---
+description: 检查模板相关的接口、proto file 定义
+---
+
 # 模板 template
 
 ## 模板的增、删、改、查
