@@ -34,7 +34,8 @@
   * [配置强制执行](siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/pei-zhi-qiang-zhi-zhi-hang.md)
   * [执行日志](siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/zhi-hang-ri-zhi.md)
   * [常见错误说明](siber-ji-cheng-ce-shi-ping-tai/cao-zuo-zhi-nan/chang-jian-cuo-wu-shuo-ming.md)
-* [siber 接口文档](siber-ji-cheng-ce-shi-ping-tai/siber-jie-kou-wen-dang.md)
+* [siber 接口文档](siber-ji-cheng-ce-shi-ping-tai/siber-jie-kou-wen-dang/README.md)
+  * [模板 template](siber-ji-cheng-ce-shi-ping-tai/siber-jie-kou-wen-dang/mo-ban-template.md)
 * [搭建 siber](siber-ji-cheng-ce-shi-ping-tai/da-jian-siber/README.md)
   * [使用 docker 镜像搭建 siber](siber-ji-cheng-ce-shi-ping-tai/da-jian-siber/shi-yong-docker-jing-xiang-da-jian-siber.md)
 
