@@ -47,9 +47,7 @@ manage\_mode：
 
 
 
-## 附：template 相关 proto 定义
-
-### 
+## 模板的 proto 定义
 
 ### \[message\]CheckTemplate
 
@@ -65,7 +63,7 @@ message CheckTemplate {
 }
 ```
 
-#### ManageCheckTemplateInfo
+### \[message\]ManageCheckTemplateInfo
 
 ```text
 message ManageCheckTemplateInfo {
@@ -74,9 +72,7 @@ message ManageCheckTemplateInfo {
 }
 ```
 
-### rpc
-
-#### CheckTemplateList
+### \[message\]CheckTemplateList
 
 ```text
 message CheckTemplateList{
@@ -84,7 +80,26 @@ message CheckTemplateList{
 }
 ```
 
-#### ManageTemplateList
+### \[message\]CheckTemplateList
+
+```text
+message CheckTemplateList{
+    repeated CheckTemplate check_template = 1;
+}
+```
+
+### \[rpc\]ManageCheckTemplate
+
+```text
+rpc ManageCheckTemplate(ManageCheckTemplateInfo) returns (CheckTemplate){
+    option (google.api.http) = {
+            post:"/siberhttp/manage/check_template"
+            body:"*"
+        };
+}
+```
+
+### \[rpc\]ManageTemplateList
 
 ```text
 rpc ManageTemplateList (FilterInfo) returns (CheckTemplateList){
