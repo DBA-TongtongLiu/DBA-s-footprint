@@ -81,6 +81,7 @@ manage\_mode：
 {
     "check_template": [
         {
+            "template_id": "60f94f40bdbbe1f8432bf024",
             "template_name": "测试",
             "update_time": "1626951488"
         }
