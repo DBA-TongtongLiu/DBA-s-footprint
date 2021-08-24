@@ -50,21 +50,20 @@ type Entry struct {
 }
 ```
 
-memoryStorage Compact 实现逻辑：
+**memoryStorage Compact 实现逻辑：**
 
 1. 计算当前 \* 中的索引位置  `offset := ms.ents[0].Index`
-2. 判断压缩的版本？是否小于等于这个位置
+2. 判断压缩的版本是否小于等于这个位置
    1. 是：报错并返回
    2. 否：继续
-3. 判断要压缩的版本？，是否高于当前最大的版本？
+3. 判断要压缩的版本，是否高于当前最大的版本
    1. 是：报错并
    2. 否：继续
-4. 计算本次要压缩版本的偏移量，也就是\*在这个数组？中的下标  `i := compactIndex - offset`
-5. 定义一个与原 ents 类型相同的空数组，长度为 1，容量为要保留的元素 + 1 ？ `ents := make([]pb.Entry, 1, 1+uint64(len(ms.ents))-i)`
-6. 将该数组下标为 0 的元素（即：第一个元素）的 Index 和 Term 赋值为第 i 个元素的 Index 和 Term `ents[0].Index = ms.ents[i].Index`      `ents[0].Term = ms.ents[i].Term`
-7. ？
-8. 将原 ents 第 i 个元素后的所有内容（不包括第 i 个元素），填充到该数组的后部分（即：除了第一个元素外）`ents = append(ents, ms.ents[i+1:]...)`
-9. 用新的 ents 整体替换旧的 ，这样即便 compact 操作过程耗时，也不会影响到其他操作`ms.ents = ents` 
+4. 计算本次要压缩版本的偏移量，也就是要压缩的版本在这个数组中的下标  `i := compactIndex - offset`
+5. 定义一个与原 ents 类型相同的空数组，长度为 1，容量为要保留的元素个数 + 1 `ents := make([]pb.Entry, 1, 1+uint64(len(ms.ents))-i)`
+6. 将该数组下标为 0 的元素（即：第一个元素）的 Index 和 Term 赋值为第 i 个元素的 Index 和 Term 
+7. 将原 ents 第 i 个元素后的所有内容（不包括第 i 个元素），填充到该数组的后部分（即：除了第一个元素外）`ents = append(ents, ms.ents[i+1:]...)`
+8. 用新的 ents 整体替换旧的 ，这样即便 compact 操作过程耗时，也不会影响到其他操作`ms.ents = ents` 
 
 ```go
 // Compact discards all log entries prior to compactIndex.
@@ -91,4 +90,33 @@ func (ms *MemoryStorage) Compact(compactIndex uint64) error {
 	return nil
 }
 ```
+
+
+
+## 技巧
+
+从源码上，我们除了可以看出 etcd 是如何实现 compact 的以外，还可以学到一些小技巧。
+
+比如在给切片做 append 时，一定要格外注意长度（len）和容量（cap）的区别。我们分别创建容量为 5， 和长度为 5 的切片，观察在它们之后做 append 的效果：
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+	capCase := make([]int, 0, 5)
+	fmt.Printf("%v\n", append(capCase,[]int{3,4}...))
+
+	lenCase := make([]int,5)
+	fmt.Printf("%v", append(lenCase,[]int{3,4}... ))
+}
+```
+
+输出：
+
+\[3 4\] 
+
+\[0 0 0 0 0 3 4\]
 
