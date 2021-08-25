@@ -93,6 +93,252 @@ func (ms *MemoryStorage) Compact(compactIndex uint64) error {
 
 
 
+
+
+ 在 server 启动时，会通过  `func (s *EtcdServer) run()` 实时的从队列中获去需要执行的信息 `case ap := <-s.r.apply()`
+
+从 KVStore 中删除已 compact 的 version，就是其中一个分类。
+
+那什么时候往队列里放东西呢？
+
+当 raftNode ready 的时候。这个状态，我们后续再详细分析。
+
+## KVStore 获得和应用 compact entry 的方式
+
+### func \(s \*EtcdServer\) apply
+
+compact 属于 normal entry 的一种
+
+```go
+func (s *EtcdServer) apply(
+  
+   ...
+   
+   for i := range es {
+     
+     ...
+     
+      switch e.Type {
+      case raftpb.EntryNormal:
+         s.applyEntryNormal(&e)
+        
+        ...
+}
+```
+
+### func \(s \*EtcdServer\) applyEntryNormal
+
+这里的 index 应该不是指 compact 的 Index 吧
+
+```go
+func (s *EtcdServer) applyEntryNormal(e *raftpb.Entry) {
+	shouldApplyV3 := membership.ApplyV2storeOnly
+	index := s.consistIndex.ConsistentIndex()
+	if e.Index > index {
+		// set the consistent index of current executing entry
+		s.consistIndex.SetConsistentIndex(e.Index, e.Term)
+		shouldApplyV3 = membership.ApplyBoth
+	}
+	
+	...
+	
+	if needResult || !noSideEffect(&raftReq) {
+	
+		...
+		
+		ar = s.applyV3.Apply(&raftReq, shouldApplyV3)
+	}
+	
+	...
+	
+}
+```
+
+### func \(a \*applierV3backend\) Apply
+
+r 是什么类型？通道吗？
+
+```go
+func (a *applierV3backend) Apply(r *pb.InternalRaftRequest, shouldApplyV3 membership.ShouldApplyV3) *applyResult {
+   
+   ...
+
+   switch {
+   
+   ...
+   
+   case r.Compaction != nil:
+      op = "Compaction"
+      ar.resp, ar.physc, ar.trace, ar.err = a.s.applyV3.Compaction(r.Compaction)
+  
+   ...
+   
+}
+```
+
+### func \(a \*applierV3backend\) Compaction
+
+```go
+func (a *applierV3backend) Compaction(compaction *pb.CompactionRequest) (*pb.CompactionResponse, <-chan struct{}, *traceutil.Trace, error) {
+	...
+	
+	ch, err := a.s.KV().Compact(trace, compaction.Revision)
+	
+	...
+}
+```
+
+### func \(s \*store\) Compact
+
+```go
+func (s *store) Compact(trace *traceutil.Trace, rev int64) (<-chan struct{}, error) {
+	s.mu.Lock()
+
+	ch, err := s.updateCompactRev(rev)
+	trace.Step("check and update compact revision")
+	if err != nil {
+		s.mu.Unlock()
+		return ch, err
+	}
+	s.mu.Unlock()
+
+	return s.compact(trace, rev)
+}
+```
+
+### func \(s \*store\) compact
+
+```go
+func (s *store) compact(trace *traceutil.Trace, rev int64) (<-chan struct{}, error) {
+	ch := make(chan struct{})
+	var j = func(ctx context.Context) {
+		if ctx.Err() != nil {
+			s.compactBarrier(ctx, ch)
+			return
+		}
+		start := time.Now()
+		keep := s.kvindex.Compact(rev)
+		indexCompactionPauseMs.Observe(float64(time.Since(start) / time.Millisecond))
+		if !s.scheduleCompaction(rev, keep) {
+			s.compactBarrier(context.TODO(), ch)
+			return
+		}
+		close(ch)
+	}
+
+	s.fifoSched.Schedule(j)
+	trace.Step("schedule compaction")
+	return ch, nil
+}
+```
+
+### func \(ti \*treeIndex\) Compact
+
+```go
+func (ti *treeIndex) Compact(rev int64) map[revision]struct{} {
+	available := make(map[revision]struct{})
+	ti.lg.Info("compact tree index", zap.Int64("revision", rev))
+	ti.Lock()
+	clone := ti.tree.Clone()
+	ti.Unlock()
+
+	clone.Ascend(func(item btree.Item) bool {
+		keyi := item.(*keyIndex)
+		//Lock is needed here to prevent modification to the keyIndex while
+		//compaction is going on or revision added to empty before deletion
+		ti.Lock()
+		keyi.compact(ti.lg, rev, available)
+		if keyi.isEmpty() {
+			item := ti.tree.Delete(keyi)
+			if item == nil {
+				ti.lg.Panic("failed to delete during compaction")
+			}
+		}
+		ti.Unlock()
+		return true
+	})
+	return available
+}
+```
+
+### func \(ki \*keyIndex\) compact
+
+```go
+func (ki *keyIndex) compact(lg *zap.Logger, atRev int64, available map[revision]struct{}) {
+	if ki.isEmpty() {
+		lg.Panic(
+			"'compact' got an unexpected empty keyIndex",
+			zap.String("key", string(ki.key)),
+		)
+	}
+
+	genIdx, revIndex := ki.doCompact(atRev, available)
+
+	g := &ki.generations[genIdx]
+	if !g.isEmpty() {
+		// remove the previous contents.
+		if revIndex != -1 {
+			g.revs = g.revs[revIndex:]
+		}
+		// remove any tombstone
+		if len(g.revs) == 1 && genIdx != len(ki.generations)-1 {
+			delete(available, g.revs[0])
+			genIdx++
+		}
+	}
+
+	// remove the previous generations.
+	ki.generations = ki.generations[genIdx:]
+}
+```
+
+### func \(ki \*keyIndex\) doCompact
+
+这个看起来，也是先操作索引，没有真正的删除
+
+```go
+func (ki *keyIndex) doCompact(atRev int64, available map[revision]struct{}) (genIdx int, revIndex int) {
+	// walk until reaching the first revision smaller or equal to "atRev",
+	// and add the revision to the available map
+	f := func(rev revision) bool {
+		if rev.main <= atRev {
+			available[rev] = struct{}{}
+			return false
+		}
+		return true
+	}
+
+	genIdx, g := 0, &ki.generations[0]
+	// find first generation includes atRev or created after atRev
+	for genIdx < len(ki.generations)-1 {
+		if tomb := g.revs[len(g.revs)-1].main; tomb > atRev {
+			break
+		}
+		genIdx++
+		g = &ki.generations[genIdx]
+	}
+
+	revIndex = g.walk(f)
+
+	return genIdx, revIndex
+}
+```
+
+### func \(g \*generation\) walk
+
+```go
+func (g *generation) walk(f func(rev revision) bool) int {
+	l := len(g.revs)
+	for i := range g.revs {
+		ok := f(g.revs[l-i-1])
+		if !ok {
+			return l - i - 1
+		}
+	}
+	return -1
+}
+```
+
 ## 技巧
 
 从源码上，我们除了可以看出 etcd 是如何实现 compact 的以外，还可以学到一些小技巧。
