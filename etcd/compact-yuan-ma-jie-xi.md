@@ -12,7 +12,7 @@
 1. 压缩任务执行时，它首先会压缩 treeIndex 模块中的 keyIndex 索引 
 2. 其次会遍历 boltdb 中的 key ，删除已废弃的 key
 
-
+## memoryStorage 接收并执行 compact
 
 raft 模块对于 memoryStorage 定义：
 
@@ -91,19 +91,15 @@ func (ms *MemoryStorage) Compact(compactIndex uint64) error {
 }
 ```
 
+## KVStore 获得和应用 compact entry 的方式
 
-
-
-
- 在 server 启动时，会通过  `func (s *EtcdServer) run()` 实时的从队列中获去需要执行的信息 `case ap := <-s.r.apply()`
+在 server 启动时，会通过  `func (s *EtcdServer) run()` 实时的从队列中获去需要执行的信息 `case ap := <-s.r.apply()`
 
 从 KVStore 中删除已 compact 的 version，就是其中一个分类。
 
 那什么时候往队列里放东西呢？
 
 当 raftNode ready 的时候。这个状态，我们后续再详细分析。
-
-## KVStore 获得和应用 compact entry 的方式
 
 ### func \(s \*EtcdServer\) apply
 
@@ -127,8 +123,6 @@ func (s *EtcdServer) apply(
 ```
 
 ### func \(s \*EtcdServer\) applyEntryNormal
-
-这里的 index 应该不是指 compact 的 Index 吧
 
 ```go
 func (s *EtcdServer) applyEntryNormal(e *raftpb.Entry) {
