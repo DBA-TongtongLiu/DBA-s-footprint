@@ -190,16 +190,16 @@ func (a *applierV3backend) Compaction(compaction *pb.CompactionRequest) (*pb.Com
 
 ### func \(s \*store\) Compact
 
+1. 将此次压缩信息加到 store 的 FIFO 的 schedule 中
+2. 调用 store 的 compact 方法
+
 ```go
 func (s *store) Compact(trace *traceutil.Trace, rev int64) (<-chan struct{}, error) {
+	
 	s.mu.Lock()
 
 	ch, err := s.updateCompactRev(rev)
-	trace.Step("check and update compact revision")
-	if err != nil {
-		s.mu.Unlock()
-		return ch, err
-	}
+	
 	s.mu.Unlock()
 
 	return s.compact(trace, rev)
@@ -289,33 +289,43 @@ func (ki *keyIndex) compact(lg *zap.Logger, atRev int64, available map[revision]
 
 ```go
 func (ki *keyIndex) doCompact(atRev int64, available map[revision]struct{}) (genIdx int, revIndex int) {
-	// walk until reaching the first revision smaller or equal to "atRev",
-	// and add the revision to the available map
-	f := func(rev revision) bool {
-		if rev.main <= atRev {
-			available[rev] = struct{}{}
-			return false
-		}
-		return true
-	}
 
-	genIdx, g := 0, &ki.generations[0]
-	// find first generation includes atRev or created after atRev
-	for genIdx < len(ki.generations)-1 {
-		if tomb := g.revs[len(g.revs)-1].main; tomb > atRev {
-			break
-		}
-		genIdx++
-		g = &ki.generations[genIdx]
-	}
-
+ ​ ...
 	revIndex = g.walk(f)
 
-	return genIdx, revIndex
 }
 ```
 
-### 
+### func \(s \*store\) scheduleCompaction
+
+1. 预处理 + 后处理 `defer` + 加锁
+2. 计数器等统计信息
+3. 调用 backend 的 unsafeDelete
+
+```go
+func (s *store) scheduleCompaction(compactMainRev int64, keep map[revision]struct{}) bool {
+   
+   ...
+            tx.UnsafeDelete(buckets.Key, key)
+
+}
+```
+
+
+
+### func \(t \*batchTx\) UnsafeDelete
+
+调用 bbolt 的方法执行真正的删除操作
+
+```go
+func (t *batchTx) UnsafeDelete(bucketType Bucket, key []byte) {
+   bucket := t.tx.Bucket(bucketType.Name())
+   
+ ​  ...
+   bucket.Delete(key)
+   
+}
+```
 
 ## 技巧
 
