@@ -208,31 +208,25 @@ func (s *store) Compact(trace *traceutil.Trace, rev int64) (<-chan struct{}, err
 
 ### func \(s \*store\) compact
 
+1. 先操作 treeIndex，删除需要 compact 的 generation 和 revision [`kvindex.Compact`](https://liu-tongtong.gitbook.io/dba/etcd/compact-yuan-ma-jie-xi#func-ti-treeindex-compact)\`\`
+2. 以 map 格式返回需要保留的 generation 和 revision 等信息，存放到变量 `keep` 中
+3. store 根据此 map 异步 compact
+
 ```go
 func (s *store) compact(trace *traceutil.Trace, rev int64) (<-chan struct{}, error) {
-	ch := make(chan struct{})
-	var j = func(ctx context.Context) {
-		if ctx.Err() != nil {
-			s.compactBarrier(ctx, ch)
-			return
-		}
-		start := time.Now()
+		
+		...
 		keep := s.kvindex.Compact(rev)
-		indexCompactionPauseMs.Observe(float64(time.Since(start) / time.Millisecond))
-		if !s.scheduleCompaction(rev, keep) {
-			s.compactBarrier(context.TODO(), ch)
-			return
-		}
-		close(ch)
-	}
-
-	s.fifoSched.Schedule(j)
-	trace.Step("schedule compaction")
-	return ch, nil
+		
+		s.scheduleCompaction(rev, keep) 
+			
 }
 ```
 
 ### func \(ti \*treeIndex\) Compact
+
+1. 加锁，确保操作安全
+2. 【TODO】treeIndex 和 keyIndex 关系
 
 ```go
 func (ti *treeIndex) Compact(rev int64) map[revision]struct{} {
@@ -263,38 +257,35 @@ func (ti *treeIndex) Compact(rev int64) map[revision]struct{} {
 
 ### func \(ki \*keyIndex\) compact
 
+1. 通过 [`ki.doCompact`](https://liu-tongtong.gitbook.io/dba/etcd/compact-yuan-ma-jie-xi#func-ki-keyindex-docompact) 计算出 available map
+2. 删除小于压缩版本的 revision
+3. 删除小于压缩版本且标记为“已删除（tombstone）”的 revision
+4. 删除已经不包含 revision 了的 generation
+
 ```go
 func (ki *keyIndex) compact(lg *zap.Logger, atRev int64, available map[revision]struct{}) {
-	if ki.isEmpty() {
-		lg.Panic(
-			"'compact' got an unexpected empty keyIndex",
-			zap.String("key", string(ki.key)),
-		)
-	}
+	...
 
 	genIdx, revIndex := ki.doCompact(atRev, available)
 
-	g := &ki.generations[genIdx]
 	if !g.isEmpty() {
-		// remove the previous contents.
-		if revIndex != -1 {
+		 
 			g.revs = g.revs[revIndex:]
-		}
-		// remove any tombstone
-		if len(g.revs) == 1 && genIdx != len(ki.generations)-1 {
+		
 			delete(available, g.revs[0])
-			genIdx++
+	
 		}
 	}
-
-	// remove the previous generations.
+  
 	ki.generations = ki.generations[genIdx:]
 }
 ```
 
 ### func \(ki \*keyIndex\) doCompact
 
-这个看起来，也是先操作索引，没有真正的删除
+1. 到序遍历该 keyIndex 中 generation 的 revision 信息
+2. 找到小于等于要 compact 的最小版本
+3. 将其加入到 available map 中
 
 ```go
 func (ki *keyIndex) doCompact(atRev int64, available map[revision]struct{}) (genIdx int, revIndex int) {
@@ -324,20 +315,7 @@ func (ki *keyIndex) doCompact(atRev int64, available map[revision]struct{}) (gen
 }
 ```
 
-### func \(g \*generation\) walk
-
-```go
-func (g *generation) walk(f func(rev revision) bool) int {
-	l := len(g.revs)
-	for i := range g.revs {
-		ok := f(g.revs[l-i-1])
-		if !ok {
-			return l - i - 1
-		}
-	}
-	return -1
-}
-```
+### 
 
 ## 技巧
 
