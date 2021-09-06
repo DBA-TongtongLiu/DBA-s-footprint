@@ -16,7 +16,7 @@
 
 raft 模块对于 memoryStorage 定义：
 
-注意 ents 这个变量，它是一个\* 结构体类型的变量，其中字段含义如下：
+注意 ents 这个变量，它是一个 Entry 结构体类型的变量（_ents\[i\] has raft log position i+snapshot.Metadata.Index_），其中字段含义如下：
 
 * Term
 * Index
@@ -57,11 +57,11 @@ type Entry struct {
    1. 是：报错并返回
    2. 否：继续
 3. 判断要压缩的版本，是否高于当前最大的版本
-   1. 是：报错并
+   1. 是：报错并返回
    2. 否：继续
 4. 计算本次要压缩版本的偏移量，也就是要压缩的版本在这个数组中的下标  `i := compactIndex - offset`
-5. 定义一个与原 ents 类型相同的空数组，长度为 1，容量为要保留的元素个数 + 1 `ents := make([]pb.Entry, 1, 1+uint64(len(ms.ents))-i)`
-6. 将该数组下标为 0 的元素（即：第一个元素）的 Index 和 Term 赋值为第 i 个元素的 Index 和 Term 
+5. 定义一个与原 ents 类型相同的空数组，长度为： 1，容量为：要保留的元素个数 + 1 `ents := make([]pb.Entry, 1, 1+uint64(len(ms.ents))-i)`
+6. 将空数组下标为 0 的元素（即：第一个元素）的 Index 和 Term 赋值为原数组第 i 个元素的 Index 和 Term 
 7. 将原 ents 第 i 个元素后的所有内容（不包括第 i 个元素），填充到该数组的后部分（即：除了第一个元素外）`ents = append(ents, ms.ents[i+1:]...)`
 8. 用新的 ents 整体替换旧的 ，这样即便 compact 操作过程耗时，也不会影响到其他操作`ms.ents = ents` 
 
@@ -220,7 +220,9 @@ func (s *store) compact(trace *traceutil.Trace, rev int64) (<-chan struct{}, err
 ### func \(ti \*treeIndex\) Compact
 
 1. 加锁，确保操作安全
-2. 【TODO】treeIndex 和 keyIndex 关系
+2. treeIndex 和 keyIndex 关系：
+   1. [treeIndex](https://github.com/etcd-io/etcd/blob/v3.3.10/mvcc/index.go)顾名思义就是一个树状索引，它通过在内存中维护一个[B树](https://github.com/google/btree)，来达到加速查询key的功能。
+   2. 这棵树的每一个节点都是 keyIndex
 
 ```go
 func (ti *treeIndex) Compact(rev int64) map[revision]struct{} {
