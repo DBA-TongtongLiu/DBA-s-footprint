@@ -20,43 +20,43 @@ MGR 集群从库全部断开
 
 检查链接：
 
-```text
+```
 select * from information_schema.processlist where command <> 'Sleep';
 ```
 
 检查流量：
 
-```text
+```
 tail -f master.log
 ```
 
 检查单主模式是否开启：
 
-```text
+```
 show global variables like 'group_replication_single_primary_mode';
 ```
 
 检查 server\_id 是否冲突：
 
-```text
+```
 show global variables like 'server_id';
 ```
 
 检查实例当前的地址：
 
-```text
+```
 show global variables like 'group_replication_local_address';
 ```
 
 检查 MGR 集群当前的配置：
 
-```text
+```
 show global variables like 'group_replication_group_seeds';
 ```
 
 ### 将 master-01 设置为 MGR 主库
 
-```text
+```
 reset master;
 
 change master to master_user='repluser',master_password='123456' for channel 'group_replication_recovery';
@@ -72,39 +72,39 @@ set global group_replication_bootstrap_group=off;
 
 对 master-01 和 slave-02 进行数据备份
 
-```text
-msyqldump -h 127.0.0.1 -u root -p -q --single-transaction --master-data=2 --all-databases > recover.sql
+```
+msyqldump -h 127.0.0.1 -u root -p -q --single-transaction --set-gtid-purged=ON --all-databases > recover.sql
 ```
 
 参数说明：
 
 1. `-q:` --quick , Don't buffer query, dump directly to stdout.
-2.  `​--single-transaction:` Creates a consistent snapshot by dumping all tables in a single transaction.
+2. &#x20;`​--single-transaction:` Creates a consistent snapshot by dumping all tables in a single transaction.
 3. `--master-data=2:` 会注释掉 change master to， MGR 不需要指定具体位置，会自动寻找
 
 ### 修复 slave-03
 
 将 `gtid_executed` , `gtid_purged` 变量置空
 
-```text
+```
 reset master；
 ```
 
 导入备份的数据（master）：
 
-```text
+```
 source recovery.sql;
 ```
 
 生效导入
 
-```text
+```
 flush privileges;
 ```
 
 加入 MGR 集群：
 
-```text
+```
 set group_replication_local_address=':24901'
 
 set global group_replication_allow_local_disjoint_gtids_join=on;
@@ -124,13 +124,13 @@ start group_replication;
 
 ### 添加主从服务器列表
 
-```text
+```
 insert into mysql_servers(hostgroup_id,hostname,port,weight,comment) values(10,'192.168.1.144',3306,1,'master'),(10,'192.168.1.145',3306,1,'slave1'),(10,'192.168.1.146',3306,3,'slave2');
 ```
 
 ### 加载和保存
 
-```text
+```
  load mysql servers to runtime;
  
  save mysql servers to disk;
@@ -140,7 +140,7 @@ insert into mysql_servers(hostgroup_id,hostname,port,weight,comment) values(10,'
 
 ### 检查用户、规则等是否存在
 
-```text
+```
 select * from mysql_users;
 
 select * from mysql_replication_hostgroups;
@@ -148,7 +148,7 @@ select * from mysql_replication_hostgroups;
 
 如果不存在，添加:
 
-```text
+```
  insert into mysql_users(username,password,default_hostgroup) values('proxysql','123456',10);
 
 insert into mysql_replication_hostgroups values (10,20,'read_only','proxysql');
@@ -164,7 +164,7 @@ insert into mysql_replication_hostgroups values (10,20,'read_only','proxysql');
 
 ## 可用性测试
 
-```text
+```
 create database test;
 
 create table test(id int);
@@ -181,6 +181,4 @@ drop table test.test;
 
 drop database test.test;
 ```
-
-
 
