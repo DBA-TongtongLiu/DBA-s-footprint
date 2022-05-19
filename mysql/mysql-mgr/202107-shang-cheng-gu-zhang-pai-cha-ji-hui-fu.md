@@ -73,7 +73,7 @@ set global group_replication_bootstrap_group=off;
 对 master-01 和 slave-02 进行数据备份
 
 ```
-msyqldump -h 127.0.0.1 -u root -p -q --single-transaction --set-gtid-purged=ON --all-databases > recover.sql
+mysqldump -h 127.0.0.1 -u root -p -q --single-transaction --set-gtid-purged=ON --all-databases > recover.sql
 ```
 
 参数说明：
