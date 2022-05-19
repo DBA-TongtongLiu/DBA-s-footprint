@@ -2,9 +2,9 @@
 
 * [hello money](README.md)
 
-## 麒麟&达梦适配 <a id="qi-lin-da-meng-kuo-pei"></a>
+## 麒麟&达梦适配 <a href="#qi-lin-da-meng-kuo-pei" id="qi-lin-da-meng-kuo-pei"></a>
 
----
+***
 
 * [麒麟服务器上安装 DM8.md](qi-lin-fu-wu-qi-shang-an-zhuang-dm8.md.md)
 * [配置 UnixODBC](pei-zhi-isql-client.md)
@@ -18,6 +18,7 @@
 * [MySQL 表的行转列](mysql/mysql-biao-de-hang-zhuan-lie.md)
 * [docker 上安装及使用 XtraBackup](mysql/docker-and-xtrabackup.md)
 * [MGR](mysql/mysql-mgr/README.md)
+  * [MGR 如何新增节点？](mysql/mysql-mgr/mgr-ru-he-xin-zeng-jie-dian.md)
   * [MGR + Proxy 集群故障排查](mysql/mysql-mgr/mgr-+-proxy-ji-qun-gu-zhang-pai-cha.md)
   * [MGR 集群只剩一台节点怎么办](mysql/mysql-mgr/202107-shang-cheng-gu-zhang-pai-cha-ji-hui-fu.md)
 
@@ -55,4 +56,3 @@
 ## 开发技能
 
 * [base64 的四种编码方式](kai-fa-ji-neng/base64-de-si-zhong-bian-ma-fang-shi.md)
-
