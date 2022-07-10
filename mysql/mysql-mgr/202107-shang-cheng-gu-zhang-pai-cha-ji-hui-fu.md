@@ -62,6 +62,10 @@ show global variables like 'group_replication_group_seeds';
 
 ### 将 master-01 设置为 MGR 主库
 
+
+
+> 这里有个前提，就是 master-01 当前在以单节点的形式提供服务，且不能够停机。
+
 ```
 reset master;
 
@@ -76,7 +80,7 @@ set global group_replication_bootstrap_group=off;
 
 ### 数据备份
 
-通过 GTID 找到最后的主库进行备份：
+备份 master-01：
 
 ```
 mysqldump -h 127.0.0.1 -u root -p -q --single-transaction --set-gtid-purged=ON --all-databases > recover.sql
