@@ -76,7 +76,7 @@ set global group_replication_bootstrap_group=off;
 
 ### 数据备份
 
-对 master-01 和 slave-02 进行数据备份
+通过 GTID 找到最后的主库进行备份：
 
 ```
 mysqldump -h 127.0.0.1 -u root -p -q --single-transaction --set-gtid-purged=ON --all-databases > recover.sql
@@ -87,6 +87,14 @@ mysqldump -h 127.0.0.1 -u root -p -q --single-transaction --set-gtid-purged=ON -
 1. `-q:` --quick , Don't buffer query, dump directly to stdout.
 2. &#x20;`​--single-transaction:` Creates a consistent snapshot by dumping all tables in a single transaction.
 3. `--master-data=2:` 会注释掉 change master to， MGR 不需要指定具体位置，会自动寻找
+
+
+
+如果你用的是 MySQL5.7.\* 版本，那么恭喜了，因为 MySQL 自带 bug，所有 5.7 的小版本在全局导出时，会丢失掉 sys 库的内容。 所以你需要用一条命令单独导出，作为补充 sql：
+
+```
+mysqldump -u root -p --databases --routines  sys  --set-gtid-purged=off > recover_function.sql
+```
 
 ### 修复 slave-03
 
@@ -100,7 +108,9 @@ reset master；
 
 ```
 set sql_log_bin = 0;
+
 source recovery.sql;
+source recovery_function.sql
 ```
 
 生效导入
