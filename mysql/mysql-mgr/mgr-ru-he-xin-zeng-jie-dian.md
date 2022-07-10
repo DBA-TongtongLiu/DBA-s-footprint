@@ -50,17 +50,22 @@ reset master;
 ```
 
 ```
-// 登录 MySQL 执行
+// 登录 MySQL 执行：不记 binlog，不生成 GTID
 set sql_log_bin = 0;
 ```
 
 ```
-// 登录 MySQL 执行
+// 登录 MySQL 执行：把导出的 sql 文件导入
+source ***.sql
+```
+
+```
+// 登录 MySQL 执行：使 mysql.user 等权限表中的用户生效
 flush privileges;
 ```
 
 ```
-// 登录 MySQL 执行
+// 登录 MySQL 执行：这个不执行也可以
 set sql_log_bin = 1;
 ```
 
